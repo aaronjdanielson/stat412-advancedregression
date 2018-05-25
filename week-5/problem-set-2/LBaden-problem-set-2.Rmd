@@ -43,7 +43,12 @@ summary(fit)
   The model does not appear to fit well, as the AIC is very high at 14256 However, treatment assignment is significant in the model. 
   
   To check for overdispersion, we can examine the difference between the residual deviance and its degrees of freedom. In a well-fitted model, these values should be close to equal. However, here the residual deviance is 12925, much higher than its degrees of freedom, 431. This provides evidence of overdispersion in the model.
- 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good. Check out https://www.sciencedirect.com/science/article/pii/030440769090014K for an explanation of another test for violations to equidispersion. You could try this package for questions two and three.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
  
 ### 2
 **Estimate Extension**: Extend the model to include pre-treatment measures of the outcome and the additional pre-treatment variables included in the dataset. Does the model fit well? Is there evidence of overdispersion?
@@ -57,6 +62,10 @@ summary(fit.2)
 
   This model fits better than the previous Poisson model in problem 1, with a lower AIC of 11537. Also, all of the predictors are significant in the model. However, there is evidence of overdispersion. The residual deviance is 10200, which is much higher than the residual deviance degrees of freedom, which is 428. This implies that there is more variability around the model's fitted values than is consistent with the Poisson distribution.
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
   
 ### 3
@@ -81,7 +90,10 @@ In both the negative binomial model and the quasi-Poisson model, the predictor s
 
 In the quasi-Poisson model, we can see that the dispersion parameter is taken to be 30. The residual deviance is still 10200 for this model, much bigger than the 428 degrees of freedom, indicating that the model is still overdispersed. In comparison, the negative binomial model is much improved. It has a residual deviance of 487.67 and 428 residual deviance degrees of freedom.
 
-
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ### 4
   **Hurdle Model?**: Fit a hurdle model to this data. This is a classic data set for Poisson regression and overdispersion...i'm honestly curious if the hurdle model makes sense and improves over any of the other previous models you have built. Also compare rootograms for all. 
@@ -114,11 +126,21 @@ The hurdle model perfectly fits the number of zeros by design, but afterwards sh
 
 Overall, it seems that the negative binomial model performs significantly better than the other models.
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+What do you think would happen if we replaced the Poisson model with a negative binomial in the hurdle model?
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 ### 5
 **Assumptions**: These data include responses from both men and women from the participating couples. Does this give you any concern?
 
 Yes, this does concern me, because responses from people in the same couple may not be independent, which would break our model's assumptions. 
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
   * * *
@@ -240,6 +262,10 @@ To create the features, I made an empty vector for each feature and then ran a l
 
 The features include the minimum and maximum value of x and y over the entire time frame, along with their mean, median, and 25\% and 75\% quantile values. I calculated the difference between the maximum and minimum x and y values as well. I also found the mean distance between x and y. I defined the beginning of the punch as the time of the minimum x value between -200 and 0,  and the end of the punch as the time of the minimum x value greater than 0 and less than 200. I then found the time until the hit, defined as the time from the beginning of the punch until time of the maximum x value between -200 and 200. I calculated the total punch time as the time between the beginning and end of the punch. I also included the x value as the beginning of the punch and end of the punch as features (pre_punch_xmin and post_punch_xmin). Finally, I found the slope of the x acceleration between the beginning of the punch and the time of the hit (the time of the maximum x value between -200 and 200).
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 ### 7
@@ -262,6 +288,11 @@ library(caret)
 confusionMatrix(preds, punch$pt)
 ```
 We can see that the model has a hard time separating #4, upper cuts, and instead mostly predicts #2, hooks, or occasionally #3, jabs. This makes sense, since the data has few upper cuts compared to the other punch types. The model also incorrectly predicts 126 hooks as jabs, and vice versa. Occasionally the model predicts hooks as #1, crosses, and crosses as hooks as well. The overall accuracy was 79.58%.  
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+What types of feastures might improve your ability to recognize upper cuts?  Which models, besides multinomial regression, might perform well in this case? 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 ### 8
@@ -287,4 +318,9 @@ confusionMatrix(as.factor(round(preds)), punch$pt)
 ```
 
 Bucketing the punches into two groups and using logistic regression, the accuracy improves to 84.54%. However, 210 hooks are predicted to be straights, and 120 straights are predicted to be hooks.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+**Comment from AD**
+Good.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
